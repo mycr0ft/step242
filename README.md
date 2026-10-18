@@ -148,4 +148,6 @@ poetry run pytest
 mkdocs serve                   # local docs site
 ```
 
-MIT license. The NIST fixtures are US-government public domain.
+MPL-2.0 (see `LICENSE`). The NIST fixtures are US-government public domain.
+
+Releases up to 0.1.0 were published under MIT.
