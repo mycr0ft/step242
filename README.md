@@ -1,20 +1,20 @@
-# stepper
+# step242
 
-[![stepper checks](https://github.com/mycr0ft/stepper/actions/workflows/check.yml/badge.svg)](https://github.com/mycr0ft/stepper/actions/workflows/check.yml)
-[![docs](https://github.com/mycr0ft/stepper/actions/workflows/docs.yml/badge.svg)](https://github.com/mycr0ft/stepper/actions/workflows/docs.yml)
-[![Docs](https://img.shields.io/badge/docs-mkdocs-blue)](https://mycr0ft.github.io/stepper/)
+[![step242 checks](https://github.com/mycr0ft/step242/actions/workflows/check.yml/badge.svg)](https://github.com/mycr0ft/step242/actions/workflows/check.yml)
+[![docs](https://github.com/mycr0ft/step242/actions/workflows/docs.yml/badge.svg)](https://github.com/mycr0ft/step242/actions/workflows/docs.yml)
+[![Docs](https://img.shields.io/badge/docs-mkdocs-blue)](https://mycr0ft.github.io/step242/)
 
 **Pure-Python toolbox for STEP (ISO 10303) product data** — read
 Part 21 exchange files, load EXPRESS schemas, check AP242 data,
 serve it as OSLC, link it to SysML models, and pin releases as
 verifiable baselines.
 
-stepper is the **right side of the Systems-Engineering Vee**
+step242 is the **right side of the Systems-Engineering Vee**
 (geometry, product structure, PMI) of a fully open-source toolchain:
 
 ```
      requirements & design              geometry & PMI
-     .sysml — sysmlpy — OSLC — stepper — .stp
+     .sysml — sysmlpy — OSLC — step242 — .stp
                     pyoslc serves both sides
                  as one catalog; baselines pin
                   released configurations
@@ -37,9 +37,9 @@ model.
 
 | capability | command / API | verified by |
 |------------|--------------|-------------|
-| Read any Part 21 file (geometry, PMI, assemblies) | `stepper inspect` | 35-test suite incl. AP242 ed. 1–4 + AP203 |
-| Parse + schema gate with CI exit codes | `stepper check -s ap242.exp` | NIST corpus: 0 failures @ ~1,800 inst/s |
-| Extract product structure as OSLC JSON-LD/Turtle | `stepper structure` | rdflib-verified on 6 fixtures |
+| Read any Part 21 file (geometry, PMI, assemblies) | `step242 inspect` | 35-test suite incl. AP242 ed. 1–4 + AP203 |
+| Parse + schema gate with CI exit codes | `step242 check -s ap242.exp` | NIST corpus: 0 failures @ ~1,800 inst/s |
+| Extract product structure as OSLC JSON-LD/Turtle | `step242 structure` | rdflib-verified on 6 fixtures |
 | Serve STEP as OSLC resources (+ shapes, provider in catalog) | pyoslc `/oslc/step/*` | 72-test pyoslc suite |
 | Link SysML elements ↔ STEP instances (the Vee join) | pyoslc `/oslc/step/vee` | sysmlpy `qn_registry()` + auto/manual links |
 | Pin + verify released configurations | pyoslc `/oslc/step/baselines` | content-addressed, immutable, tamper-detecting |
@@ -47,15 +47,15 @@ model.
 ## Install
 
 ```bash
-pip install stepper                     # the STEP reader
+pip install step242                     # the STEP reader
 git clone https://github.com/mycr0ft/pyoslc.git   # the OSLC server side
 ```
 
 From source (this repo):
 
 ```bash
-git clone https://github.com/mycr0ft/stepper.git
-cd stepper && poetry install
+git clone https://github.com/mycr0ft/step242.git
+cd step242 && poetry install
 poetry run pytest                     # 35+ tests should pass
 ```
 
@@ -63,7 +63,7 @@ poetry run pytest                     # 35+ tests should pass
 
 ```bash
 # What's in a STEP file?
-$ stepper inspect tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp
+$ step242 inspect tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp
   instances: 4350
   schema: AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4}
     ORIENTED_EDGE    636
@@ -72,10 +72,10 @@ $ stepper inspect tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp
 
 # Check it against the AP242 Ed.4 schema
 $ curl -O https://standards.iso.org/iso/ts/10303/-442/ed-7/tech/express/mim_lf.exp
-$ stepper check tests/fixtures/nist/ -s mim_lf.exp
+$ step242 check tests/fixtures/nist/ -s mim_lf.exp
 
 # Product structure as OSLC (Turtle or JSON-LD)
-$ stepper structure nist_ctc_01_asme1_ap242-e1.stp --format turtle
+$ step242 structure nist_ctc_01_asme1_ap242-e1.stp --format turtle
 ```
 
 ## The OSLC side in one minute
@@ -97,7 +97,7 @@ STEP data becomes a first-class OSLC domain:
   `?verify=1` re-hashes every artifact (tamper detection).
 
 Full walkthrough for beginners: **[the mkdocs
-site](https://mycr0ft.github.io/stepper/)** — six lessons assuming no
+site](https://mycr0ft.github.io/step242/)** — six lessons assuming no
 prior STEP knowledge, every command verified on the vendored files.
 
 ## CI/CD gates
@@ -105,7 +105,7 @@ prior STEP knowledge, every command verified on the vendored files.
 ```yaml
 jobs:
   step-check:
-    uses: mycr0ft/stepper/.github/workflows/step-check.yml@main
+    uses: mycr0ft/step242/.github/workflows/step-check.yml@main
     with:
       paths: "step/"
       semantic: "advisory"     # off | advisory | strict
@@ -114,10 +114,10 @@ jobs:
 
 Parse is **always blocking**; schema semantics are advisory by
 default. Adding `baseline-manifest` gates merges against a pinned,
-content-addressed released configuration (`stepper baseline
+content-addressed released configuration (`step242 baseline
 create/gate` — any drift exits 1 and prints the first differing
 artifact). GitLab template + pre-commit hook in the repo; details in
-[`docs/ci-integration.md`](docs/ci-integration.md). (PyPI's `stepper`
+[`docs/ci-integration.md`](docs/ci-integration.md). (PyPI's `step242`
 name is an unrelated project — pins resolve from GitHub.)
 
 ## Roadmap
@@ -142,7 +142,7 @@ corpus (available from NIST) runs the gate in ~170 s locally.
 ## Development
 
 ```bash
-poetry install                 # venv: stepper-*
+poetry install                 # venv: step242-*
 uv pip install --python $(poetry env info --path)/bin/python pytest rdflib
 poetry run pytest
 mkdocs serve                   # local docs site

@@ -1,4 +1,4 @@
-# stepper × pyoslc — Systems-Engineering Vee ↔ PLM/OSLC integration
+# step242 × pyoslc — Systems-Engineering Vee ↔ PLM/OSLC integration
 
 Architecture note. Written after the probes on 2026-10-05; all
 claims below are backed by running code or fetched standards, not
@@ -14,7 +14,7 @@ worlds this repo pair already handles:
   models — `sysmlpy` parses and analyzes them; `pyoslc` already
   serves them as OSLC resources (Saturn V example, v0.4.0).
 - **Right (geometry, product structure, PMI, manufacturing):**
-  STEP AP242 data — `stepper` now reads it (P21 + AP242 Ed.4
+  STEP AP242 data — `step242` now reads it (P21 + AP242 Ed.4
   schema + check gate; 300,851-instance NIST corpus validated).
 
 The Vee link is the integration glue: the same *element identity*
@@ -49,19 +49,19 @@ instead of files.
 So the Vee link is standards-track: STEP's arm-in-SysML structure
 becomes sysmlpy models; sysmlpy models become OSLC resources via
 pyoslc; AP242 geometry/PMI instances hang off the same element ids
-via stepper. One tool serves the full Vee.
+via step242. One tool serves the full Vee.
 
 ## Proposed architecture
 
     .sysml (Vee left/middle)          .stp AP242 (Vee right)
          │                                      │
-         │ sysmlpy.loads()/analyze()            │ stepper.load_p21()
+         │ sysmlpy.loads()/analyze()            │ step242.load_p21()
          ▼                                      ▼
     sysmlpy Model                        step model (products,
          │                               assemblies, PMI, geometry)
          │  ◄──── shared element identity (sysmlpy stable_ids /
          ▼        interchange @id ↔ STEP ANCHOR section UUIDs) ────────►
-    pyoslc server (OSLC SysML domain)          stepper→OSLC adapter
+    pyoslc server (OSLC SysML domain)          step242→OSLC adapter
          │                                          │
          └────────────── OSLC ◄─────────────────────┘
                  ServiceProviderCatalog
@@ -72,8 +72,8 @@ via stepper. One tool serves the full Vee.
 
 ## Phases
 
-- **P1 — stepper: structure extraction ✅ (7bee9dc).**
-  `stepper structure file.stp` emits OSLC-shaped JSON-LD/Turtle:
+- **P1 — step242: structure extraction ✅ (7bee9dc).**
+  `step242 structure file.stp` emits OSLC-shaped JSON-LD/Turtle:
   PRODUCT → `Product` resources,
   NEXT_ASSEMBLY_USAGE_OCCURRENCE → containment links,
   geometry summary (shape representations per product). P21 ANCHOR
@@ -83,9 +83,9 @@ via stepper. One tool serves the full Vee.
 - **P2 — pyoslc: STEP domain adapter ✅ (pyoslc ef1aa2a).**
   `StepProduct` / `StepProductDefinition` / `StepShapeRepresentation`
   / `StepFile` resource classes at the `oslc:Resource` level, typed
-  by the stepper vocabulary; `/oslc/step/*` REST endpoints;
+  by the step242 vocabulary; `/oslc/step/*` REST endpoints;
   `Step-1` service provider in the catalog; resource shapes; seeder
-  from stepper's P1 output (`seed_from_step_file(.stp)` full pipe).
+  from step242's P1 output (`seed_from_step_file(.stp)` full pipe).
   **Root-cause fix carried:** core.py's class-decorated
   `@api.representation` broke every flask-restx error path — real
   serializers now registered last.
@@ -111,7 +111,7 @@ via stepper. One tool serves the full Vee.
   `.sysml` + `.stp` source bytes land in a sha256
   content-addressed artifact store; the DERIVED payloads ride the
   manifest — the sysml interchange stable-ids JSON (with its
-  `qn_registry`) and stepper's structure JSON-LD per .stp — plus a
+  `qn_registry`) and step242's structure JSON-LD per .stp — plus a
   snapshot of the Vee link table. Baseline id = manifest digest:
   identical content is idempotent (re-creation raises), any content
   change mints a new id, `derived_from` chains baselines into a
@@ -121,7 +121,7 @@ via stepper. One tool serves the full Vee.
 
 ## Immediate next step (when picked up)
 
-1. `stepper structure` (P1): emit OSLC JSON-LD for a NIST AP242
+1. `step242 structure` (P1): emit OSLC JSON-LD for a NIST AP242
    file — small, useful, testable against rdflib + pyoslc's own
    vocabulary (the namespace-match probe above is the pattern).
 2. Add the STEP domain adapter to pyoslc's example app (P2),

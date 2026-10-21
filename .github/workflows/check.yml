@@ -1,6 +1,6 @@
-# stepper CI: parse gate + NIST corpus gate on every push/PR.
+# step242 CI: parse gate + NIST corpus gate on every push/PR.
 
-name: stepper checks
+name: step242 checks
 
 on:
   push:

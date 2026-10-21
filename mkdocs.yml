@@ -1,7 +1,7 @@
-site_name: stepper
+site_name: step242
 site_description: Pure-python STEP (ISO 10303) reader with OSLC Config-Management baselines
-repo_url: https://github.com/mycr0ft/stepper
-repo_name: mycr0ft/stepper
+repo_url: https://github.com/mycr0ft/step242
+repo_name: mycr0ft/step242
 
 theme:
   name: material

@@ -1,9 +1,9 @@
-# stepper
+# step242
 
 **Read, check, and release STEP (ISO 10303) product data — pure
 Python, no proprietary dependencies.**
 
-stepper opens STEP Part 21 exchange files (the `.stp`/`.step` files
+step242 opens STEP Part 21 exchange files (the `.stp`/`.step` files
 every CAD system can export — geometry, assemblies, and PMI), reads
 EXPRESS schemas, validates instances against AP242, and pins
 releases as verifiable OSLC Config-Management baselines. Paired
@@ -15,7 +15,7 @@ open source:
 ```
      requirements & design              geometry & PMI
      (left/middle of Vee)               (right of Vee)
-     .sysml  —  sysmlpy  —  OSLC  —  stepper  —  .stp
+     .sysml  —  sysmlpy  —  OSLC  —  step242  —  .stp
               parse/analyze   ^  parse/structure
                               │
                     pyoslc serves BOTH sides
@@ -28,21 +28,21 @@ open source:
 ## Install
 
 ```bash
-pip install stepper
+pip install step242
 ```
 
 Or from source:
 
 ```bash
-git clone https://github.com/mycr0ft/stepper.git
-cd stepper && poetry install
+git clone https://github.com/mycr0ft/step242.git
+cd step242 && poetry install
 ```
 
 ## 30-second tour
 
 ```bash
 # What's in a STEP file?
-$ stepper inspect tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp
+$ step242 inspect tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp
 nist_ctc_01_asme1_ap242-e1.stp
   instances: 4350
   schema: AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4}
@@ -53,10 +53,10 @@ nist_ctc_01_asme1_ap242-e1.stp
     ...
 
 # Check it against the AP242 schema (advisory findings by default)
-$ stepper check tests/fixtures/nist/ -s ap242_mim_lf.exp
+$ step242 check tests/fixtures/nist/ -s ap242_mim_lf.exp
 
 # Product structure as OSLC resources
-$ stepper structure nist_ctc_01_asme1_ap242-e1.stp --format turtle
+$ step242 structure nist_ctc_01_asme1_ap242-e1.stp --format turtle
 ```
 
 ## Where to next

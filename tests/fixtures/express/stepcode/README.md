@@ -12,13 +12,13 @@ components flattened with `__`. Copied 2026-10-06 from the clone at
   (`test/unitary_schemas/`, `test/buggy/` regression schemas, data
   trees) — decades of accumulated syntax torture.
 - 8,617 `WHERE` rule occurrences across the set: the design corpus for
-  stepper's future WHERE-rule evaluator (directions.md item 4). When
+  step242's future WHERE-rule evaluator (directions.md item 4). When
   the evaluator lands, these files become its acceptance corpus.
-- All 75 parse clean with `stepper.express.load_express` (verified
-  2026-10-06; if any regresses, that's a stepper bug, not a fixture
+- All 75 parse clean with `step242.express.load_express` (verified
+  2026-10-06; if any regresses, that's a step242 bug, not a fixture
   problem).
 
 `test/buggy/` schemas upstream are intentionally-ill-formed negative
-cases — those parse "successfully" here only until stepper grows
+cases — those parse "successfully" here only until step242 grows
 negative-case awareness; do not treat their parse as an endorsement of
 their content.

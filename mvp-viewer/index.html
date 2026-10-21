@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>stepper OSLC viewer — MVP spike</title>
+<title>step242 OSLC viewer — MVP spike</title>
 <style>
   :root { --bg:#10141a; --pane:#171d26; --edge:#2a3340; --fg:#d8dee7;
           --dim:#8a93a2; --acc:#4f9cf9; --ok:#5fbf77; }
@@ -54,7 +54,7 @@
 </head>
 <body>
 <header>
-  <b style="color:var(--acc)">stepper</b>&nbsp;<span style="color:var(--dim)">OSLC viewer</span>
+  <b style="color:var(--acc)">step242</b>&nbsp;<span style="color:var(--dim)">OSLC viewer</span>
   <input id="root-url" placeholder="OSLC resource URL — e.g. http://localhost:5055/oslc/step/product"
          value="http://localhost:5055/oslc/step/product">
   <button id="go">Fetch</button>
@@ -80,7 +80,7 @@
 <script>
 "use strict";
 const $ = (id) => document.getElementById(id);
-const VOCAB = "https://github.com/mycr0ft/stepper/vocab#";
+const VOCAB = "https://github.com/mycr0ft/step242/vocab#";
 const DCT = "http://purl.org/dc/terms/";
 
 let currentResource = null;   // {url, doc}

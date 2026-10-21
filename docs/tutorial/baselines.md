@@ -13,7 +13,7 @@ A baseline pins a Vee configuration by **content hash**:
 | the `.sysml` source files | source | raw bytes, sha256 |
 | the `.stp` STEP files | source | raw bytes, sha256 |
 | the SysML interchange payload (+ QN registry) | derived | computed at baseline time |
-| the stepper structure payload per .stp | derived | computed at baseline time |
+| the step242 structure payload per .stp | derived | computed at baseline time |
 | the Vee link table | join | snapshot |
 
 Everything hangs in a sha256 content-addressed store; the baseline's

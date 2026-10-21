@@ -5,9 +5,9 @@ import os
 
 import pytest
 
-from stepper.express import ExpressSchema, parse_express, load_express
+from step242.express import ExpressSchema, parse_express, load_express
 
-SCHEMA_ENV = "STEPPER_AP242_EXP"
+SCHEMA_ENV = "STEP242_AP242_EXP"
 SCHEMA_PATH = os.environ.get(SCHEMA_ENV, "")
 
 MINI = """
@@ -92,8 +92,8 @@ class TestAp242Longform:
 
 class TestCheckEngine:
     def test_advisory_default_passes_unknown(self, tmp_path):
-        from stepper.check import check_file
-        from stepper.express import parse_express
+        from step242.check import check_file
+        from step242.express import parse_express
         schema = parse_express(MINI)
         src = tmp_path / "m.stp"
         src.write_text("""ISO-10303-21;
@@ -111,7 +111,7 @@ END-ISO-10303-21;
         assert any(f.code == "UNKNOWN_ENTITY" for f in r.findings)
 
     def test_parse_failure_blocks(self, tmp_path):
-        from stepper.check import check_file
+        from step242.check import check_file
         src = tmp_path / "bad.stp"
         src.write_text("not a p21 file\n")
         r = check_file(str(src), semantic="off")

@@ -7,7 +7,7 @@ models are clean enough to trust it.
 ## What runs
 
 ```bash
-stepper check models/cad.stp --semantic advisory
+step242 check models/cad.stp --semantic advisory
 ```
 
 * parse of every instance against Part 21 (blocking),
@@ -21,7 +21,7 @@ stepper check models/cad.stp --semantic advisory
 ```yaml
 jobs:
   step-check:
-    uses: mycr0ft/stepper/.github/workflows/step-check.yml@main
+    uses: mycr0ft/step242/.github/workflows/step-check.yml@main
     with:
       paths: "step/"
       semantic: "advisory"          # off | advisory | strict
@@ -30,28 +30,31 @@ jobs:
 ```
 
 Inputs: `paths`, `exclude`, `semantic`, `baseline-manifest`,
-`baseline-inputs`, `python-version`, `stepper-version`. Parse is
+`baseline-inputs`, `python-version`, `step242-version`. Parse is
 always blocking; `semantic` scales the schema stage; setting
 `baseline-manifest` adds the drift gate.
 
-Note: PyPI's `stepper` package is an unrelated project — install pins
-resolve to `git+https://github.com/mycr0ft/stepper@main` by default.
+Note: the project was called `stepper` until 2026-10-21 and is now
+`step242` — PyPI's `stepper` name belongs to an unrelated motor-control
+package, so the distribution name had to change. Install pins resolve to
+`git+https://github.com/mycr0ft/step242@main` by default; once the first
+PyPI release is out, use `step242==X.Y.Z`.
 
-stepper itself dogfoods the workflow in `step-dogfood.yml` against
+step242 itself dogfoods the workflow in `step-dogfood.yml` against
 its vendored NIST corpus.
 
 ## GitLab CI
 
 ```yaml
 include:
-  - remote: 'https://raw.githubusercontent.com/mycr0ft/stepper/main/gitlab/step-check.gitlab-ci.yml'
+  - remote: 'https://raw.githubusercontent.com/mycr0ft/step242/main/gitlab/step-check.gitlab-ci.yml'
 
 step-check:
   extends: .step-check
   variables:
     STEP_PATHS: "step/"
-    STEPPER_SEMANTIC: "advisory"
-    # STEPPER_BASELINE: "config-mgmt/baseline.json"
+    STEP242_SEMANTIC: "advisory"
+    # STEP242_BASELINE: "config-mgmt/baseline.json"
 ```
 
 ## The baseline gate (released-configuration discipline)
@@ -59,7 +62,7 @@ step-check:
 Pin a configuration once, from the machine that declared it:
 
 ```bash
-stepper baseline create \
+step242 baseline create \
   --step released/cad.stp \
   --title "SRR-1" --author "jf" \
   --out config-mgmt/baseline.json
@@ -73,7 +76,7 @@ gate a pipeline (renaming a release cannot fire the gate).
 In CI:
 
 ```bash
-stepper baseline gate config-mgmt/baseline.json --step step/cad.stp
+step242 baseline gate config-mgmt/baseline.json --step step/cad.stp
 ```
 
 * identical derived content → exit 0 (pin holds),
@@ -81,14 +84,14 @@ stepper baseline gate config-mgmt/baseline.json --step step/cad.stp
   (`changed: step cad.stp 036683e8358a → 2d05bd399463`).
 
 Pin it by passing `baseline-manifest` to the reusable workflow (or
-`STEPPER_BASELINE` on GitLab). Commit the manifest — the gate then
+`STEP242_BASELINE` on GitLab). Commit the manifest — the gate then
 enforces "this merge stays inside the already-released configuration,
 or you consciously re-pin."
 
 ## Pre-commit
 
 `.pre-commit-hooks/step-check.sh` is a thin wrapper around
-`stepper check` for the repo you keep models in — wire it via
+`step242 check` for the repo you keep models in — wire it via
 [`pre-commit`](https://pre-commit.com/) (`language: system`, files
 `\.(stp|step|p21)$`).
 

@@ -11,7 +11,7 @@ The pyoslc sibling repo (with P2 installed):
 git clone https://github.com/mycr0ft/pyoslc.git ~/proj/pyoslc
 cd ~/proj/pyoslc
 uv venv && uv sync
-uv pip install -e ~/proj/stepper      # the seeder importss stepper
+uv pip install -e ~/proj/step242      # the seeder importss step242
 ```
 
 ## What the P2 integration added
@@ -49,7 +49,7 @@ set_step_repository(InMemoryStepRepository())
 
 with app.app_context():
     created = seed_from_step_file(
-        "~/proj/stepper/tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp")
+        "~/proj/step242/tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp")
     print(f"{len(created)} resources loaded")
 ```
 
@@ -89,7 +89,7 @@ curl -H 'Accept: text/turtle' \
 ```
 
 declares `step:productId`, `step:sourceRef`, `dcterms:title`, … —
-the shape stepper's emitter fills.
+the shape step242's emitter fills.
 
 ## The pyoslc-client CLI
 

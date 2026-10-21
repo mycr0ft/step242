@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Stepper structure (P1) tests: extraction + OSLC emission.
+"""Step242 structure (P1) tests: extraction + OSLC emission.
 
 Pinned against real NIST AP242 files (probed 2026-10-05):
 - CTC-01 (e1): 1 product, 1 PD, 1 SDR; shape rep counts present.
@@ -13,8 +13,8 @@ import json
 import os
 
 import pytest
-from stepper.p21 import load_p21
-from stepper.structure import (
+from step242.p21 import load_p21
+from step242.structure import (
     OSLC_CORE, OSLC_SYSML, DCTERMS, ProductStructure,
     extract_structure, to_oslc_jsonld, to_oslc_turtle, structure_file,
 )
@@ -122,7 +122,7 @@ class TestOslcTurtle:
 
 class TestCli:
     def test_structure_jsonld(self, capsys):
-        from stepper.cli import main
+        from step242.cli import main
         rc = main(["structure",
                    os.path.join(FIXTURES, "nist_ctc_01_asme1_ap242-e1.stp")])
         assert rc == 0
@@ -130,7 +130,7 @@ class TestCli:
         assert doc["@graph"]
 
     def test_structure_turtle(self, capsys):
-        from stepper.cli import main
+        from step242.cli import main
         rc = main(["structure", "--format", "turtle",
                    os.path.join(FIXTURES, "nist_ctc_01_asme1_ap242-e1.stp")])
         assert rc == 0

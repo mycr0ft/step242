@@ -5,7 +5,7 @@ probed on real data). Ordered by expected value against effort.
 
 ## Near term (high value, small work)
 
-### 1. STEP gate in CI — `stepper check` as a merge blocker
+### 1. STEP gate in CI — `step242 check` as a merge blocker
 
 The sysmlpy pattern (`sysml ci`) applied to STEP: a reusable GitHub
 workflow + GitLab template that fails a merge whenever a `.stp`
@@ -26,10 +26,10 @@ and **fails when the id differs from the pinned one** — the
 baseline idempotency already gives exact content-equality semantics.
 
 **What exists:** `create_baseline` + content-addressed ids.
-**Work left:** a CLI (`stepper baseline create|verify --id bl:…`) so
+**Work left:** a CLI (`step242 baseline create|verify --id bl:…`) so
 pipelines don't need pyoslc running; a sidecar manifest format.
 
-### 3. `stepper structure --output` and diff
+### 3. `step242 structure --output` and diff
 
 Persist structure payloads to files, and diff two structures:
 products added/removed, geometry counts changed, PMI counts changed.
@@ -58,7 +58,7 @@ ISO 10303-11 expressions), rule-selection policy, corpus runs.
 The standards-track ARM-in-SysML modules (10303-400:2025,
 modules 439/442) define SysML classes for the product backbone —
 `PartDefinition`-shaped. Generating the ARM from the AP242 MIM (the
-mapping is published) would let `stepper structure` emit resources
+mapping is published) would let `step242 structure` emit resources
 that are *literally SysML-v2-typed*, loadable as sysmlpy Models.
 
 **What exists:** both parsers; the qn_registry identity join; the
@@ -107,7 +107,7 @@ Config-Management service proper.
 ### 10. STEP-XML (P28) implementation method
 
 Part 28 (STEP-XML) is the XML form of the same data — a second
-reader/writer would let stepper consume systems that emit P28 (and
+reader/writer would let step242 consume systems that emit P28 (and
 it composes with 10303-15's published SysML XMI ⇔ XSD transform —
 the other standards-track SysML hook).
 

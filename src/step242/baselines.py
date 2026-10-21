@@ -13,7 +13,7 @@ content is idempotent, any change mints a new id, so a CI job can
 **fail a merge whenever the working tree's id differs from the pinned
 one** — the PLM released-configuration gate.
 
-CLI: ``stepper baseline create|verify|check`` (see cli.py).
+CLI: ``step242 baseline create|verify|check`` (see cli.py).
 """
 from __future__ import annotations
 

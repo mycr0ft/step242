@@ -1,6 +1,6 @@
 """Phase C item 2: AP242 MIM → ISO/TS 10303-3001 OBP mapping.
 
-Every mapping in stepper.bom.MIM_TO_OBP_EXACT is verified against the
+Every mapping in step242.bom.MIM_TO_OBP_EXACT is verified against the
 real -3001 class inventory (fixture vendored from
 ap238.org/smrl/data/business_object_models/) and exercised against
 the NIST AP242 fixtures.
@@ -10,9 +10,9 @@ import os
 
 import pytest
 
-from stepper.bom import (MIM_TO_OBP_EXACT, OBPModel, to_obp, to_obp_json,
+from step242.bom import (MIM_TO_OBP_EXACT, OBPModel, to_obp, to_obp_json,
                          bom_schema, uuid_bridge, instance_uuid)
-from stepper.express import load_express
+from step242.express import load_express
 
 BOM = os.path.join(os.path.dirname(__file__), "fixtures", "express", "bom_3001.exp")
 NIST = os.path.join(os.path.dirname(__file__), "fixtures", "nist")
@@ -136,7 +136,7 @@ class TestUuidBridge:
 
     def test_hash_function_declared(self, ctc):
         b = uuid_bridge(ctc)
-        assert b["hash_function"] == "stepper-obp-v1"
+        assert b["hash_function"] == "step242-obp-v1"
         assert b["obm"] == "iso-ts-10303-400-uuid"
 
     def test_attributes_shape_matches_400(self, ctc):

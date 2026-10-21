@@ -8,15 +8,15 @@ OSLC-shaped linked data.
 OSLC (Open Services for Lifecycle Collaboration) is the standard REST
 dialect lifecycle tools speak — requirements managers (DOORS, Codebeamer),
 PLM systems (Teamcenter, Windchill), and quality tools can all consume
-an OSLC catalog. stepper's `structure` command turns STEP product data
+an OSLC catalog. step242's `structure` command turns STEP product data
 into that dialect, so a STEP file becomes *queryable, linkable
 lifecycle data* instead of a geometry tombstone.
 
 ## The command
 
 ```bash
-cd ~/proj/stepper
-poetry run stepper structure tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp \
+cd ~/proj/step242
+poetry run step242 structure tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp \
     --format turtle
 ```
 
@@ -24,24 +24,24 @@ Output (trimmed):
 
 ```turtle
 @prefix oslc:  <http://open-services.net/ns/core#> .
-@prefix step:  <https://github.com/mycr0ft/stepper/vocab#> .
+@prefix step:  <https://github.com/mycr0ft/step242/vocab#> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 
-<https://example.org/stepper/file/0> a oslc:Resource ;
+<https://example.org/step242/file/0> a oslc:Resource ;
     dcterms:title "nist_ctc_01_asme1_ap242-e1.stp" ;
     dcterms:description "AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF {1 0 10303 442 1 1 4}" ;
     step:productCount 1 .
 
-<https://example.org/stepper/product/4374> a oslc:Resource ;
+<https://example.org/step242/product/4374> a oslc:Resource ;
     dcterms:identifier "#4374" ;
     dcterms:title "NIST Test Case 1" ;
     step:sourceRef "#4374" .
 
-<https://example.org/stepper/product_definition/4268> a oslc:Resource ;
+<https://example.org/step242/product_definition/4268> a oslc:Resource ;
     dcterms:title "SDR" ;
-    sysml:part <https://example.org/stepper/shape_rep/4267> .
+    sysml:part <https://example.org/step242/shape_rep/4267> .
 
-<https://example.org/stepper/shape_rep/4267> a oslc:Resource ;
+<https://example.org/step242/shape_rep/4267> a oslc:Resource ;
     dcterms:title "SHAPE_REPRESENTATION #4267" ;
     step:geometryItemCount 1 .
 ```
@@ -64,7 +64,7 @@ case.
 ## JSON-LD form
 
 ```bash
-poetry run stepper structure tests/fixtures/nist/nist_ftc_09_asme1_ap242-e1.stp \
+poetry run step242 structure tests/fixtures/nist/nist_ftc_09_asme1_ap242-e1.stp \
   --format jsonld | python3 -m json.tool | head -40
 ```
 
@@ -74,7 +74,7 @@ forms are verified to express identical resources in the test suite.
 ## Python API
 
 ```python
-from stepper import structure_file
+from step242 import structure_file
 
 s, jsonld, turtle = structure_file("model.stp")
 print(len(s.of_kind("product")), "products")

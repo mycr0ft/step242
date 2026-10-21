@@ -3,8 +3,8 @@
 Goal: open a real AP242 file from NIST and understand what is inside.
 
 ```bash
-cd ~/proj/stepper
-poetry run stepper inspect tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp
+cd ~/proj/step242
+poetry run step242 inspect tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp
 ```
 
 Output (trimmed):
@@ -40,7 +40,7 @@ nist_ctc_01_asme1_ap242-e1.stp
 ## The same thing in Python
 
 ```python
-from stepper import load_p21
+from step242 import load_p21
 
 p = load_p21("tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp")
 
@@ -58,7 +58,7 @@ for name, n in top:
 Every instance has an id (`#123`), a type, and arguments:
 
 ```python
-from stepper import load_p21, ComplexEntity, Ref
+from step242 import load_p21, ComplexEntity, Ref
 
 p = load_p21("tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp")
 
@@ -90,7 +90,7 @@ Decoded value types you'll meet:
 
     Complex entities (`#21=(A() B() C())`) are one instance that
     *is* several types simultaneously — the unit system `(SI_UNIT()
-    NAMED_UNIT(...))` pattern you'll see everywhere. stepper models
+    NAMED_UNIT(...))` pattern you'll see everywhere. step242 models
     them as `ComplexEntity` with a `.parts` list and helper
     `.get(TYPE)` / `.has_type(TYPE)`.
 

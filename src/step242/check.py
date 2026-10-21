@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Semantic checks for STEP files: instance data against its schema.
 
-`stepper check` engine — the sysmlpy-ci pattern for AP242/other-step
+`step242 check` engine — the sysmlpy-ci pattern for AP242/other-step
 data. Exit codes: 0 clean, 1 findings at/above threshold, 2 errors.
 
 Phase A checks (parse + schema inventory):
@@ -26,6 +26,22 @@ from .express import ExpressSchema
 from .p21 import (
     ComplexEntity, P21File, Ref, SimpleEntity,
 )
+
+
+def _env(*names: str, default: str) -> str:
+    """First environment variable that is set, in the order given.
+
+    Used to keep the pre-rename names working: the project was called
+    `stepper` until 2026-10-21 and is now `step242` (the PyPI name
+    `stepper` belongs to an unrelated motor-control package). The old
+    spelling is honoured as a deprecated fallback so existing CI configs
+    keep working.
+    """
+    for name in names:
+        value = os.environ.get(name)
+        if value is not None:
+            return value
+    return default
 
 
 @dataclass
@@ -73,7 +89,7 @@ class CheckResult:
 
     def as_text(self):
         mode = self.semantic_mode
-        out = [f"stepper check: {self.files_checked} file(s), "
+        out = [f"step242 check: {self.files_checked} file(s), "
                f"{self.instances_checked} instance(s), semantics {mode}"]
         for f in self.findings[:200]:
             inst = f" [{f.instance}]" if f.instance else ""
@@ -174,7 +190,7 @@ def check_file(
         f = check_schema_instances(p21, schema, file=path)
         result.findings.extend(f)
         # -- Phase C item 4: WHERE-rule evaluation
-        where_enabled = os.environ.get("STEPPER_WHERE", "1") != "0"
+        where_enabled = _env("STEP242_WHERE", "STEPPER_WHERE", default="1") != "0"
         if where_enabled:
             from .where import evaluate_where_rules
             wr = evaluate_where_rules(p21, schema)

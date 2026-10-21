@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""stepper — pure-python STEP (ISO 10303) reader and checker."""
+"""step242 — pure-python STEP (ISO 10303) reader and checker."""
 
 from .p21 import (
     Binary, ComplexEntity, Derived, Enum, P21File, P21Parser, Ref,

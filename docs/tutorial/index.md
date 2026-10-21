@@ -20,15 +20,15 @@ data in. When Boeing sends Airbus a part model, they send a STEP file
   structure, geometry, tolerances (PMI), materials.
 
 A STEP file is *data*; the schema is *the vocabulary it uses*.
-stepper reads both.
+step242 reads both.
 
-## What stepper does today
+## What step242 does today
 
 | capability | command | status |
 |------------|---------|--------|
-| read any Part 21 file | `stepper inspect` | ✅ |
-| check instances against the AP242 schema | `stepper check` | ✅ |
-| extract product structure as OSLC | `stepper structure` | ✅ |
+| read any Part 21 file | `step242 inspect` | ✅ |
+| check instances against the AP242 schema | `step242 check` | ✅ |
+| extract product structure as OSLC | `step242 structure` | ✅ |
 | serve structure via pyoslc | (pyoslc side) | ✅ |
 | link SysML ↔ STEP elements | (pyoslc Vee registry) | ✅ |
 | pin releases as baselines | (pyoslc baselines) | ✅ |
@@ -36,8 +36,8 @@ stepper reads both.
 ## What you need
 
 ```bash
-cd ~/proj/stepper
-poetry install          # creates the venv, installs stepper + deps
+cd ~/proj/step242
+poetry install          # creates the venv, installs step242 + deps
 poetry run pytest tests -q   # sanity: 35-40 tests should pass
 ```
 

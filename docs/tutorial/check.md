@@ -6,8 +6,8 @@ pipeline runs on every commit.
 ## The command
 
 ```bash
-cd ~/proj/stepper
-poetry run stepper check tests/fixtures/nist/ \
+cd ~/proj/step242
+poetry run step242 check tests/fixtures/nist/ \
     --schema ap242.ed4.exp --semantic advisory
 ```
 
@@ -19,13 +19,13 @@ real ISO/TS 10303-442 Ed.4 longform; download once and point
 curl -O https://standards.iso.org/iso/ts/10303/-442/ed-7/tech/express/mim_lf.exp
 mv mim_lf.exp ap242.ed4.exp
 
-poetry run stepper check tests/fixtures/nist/ -s ap242.ed4.exp
+poetry run step242 check tests/fixtures/nist/ -s ap242.ed4.exp
 ```
 
 Output on the vendored NIST files (trimmed):
 
 ```
-stepper check: 6 file(s), 82455 instance(s), semantics advisory
+step242 check: 6 file(s), 82455 instance(s), semantics advisory
 PASS ...
 summary: 0 parse failure(s), 0 error(s), 0 warning(s)
 result: PASS
@@ -63,7 +63,7 @@ gate. Promote to `strict` per project once your corpus is clean.
 ## JSON output for tooling
 
 ```bash
-poetry run stepper check tests/fixtures/nist/ -s ap242.ed4.exp --format json
+poetry run step242 check tests/fixtures/nist/ -s ap242.ed4.exp --format json
 ```
 
 ```json
@@ -79,7 +79,7 @@ poetry run stepper check tests/fixtures/nist/ -s ap242.ed4.exp --format json
 ## Python API
 
 ```python
-from stepper import check_file, load_express
+from step242 import check_file, load_express
 
 schema = load_express("ap242.ed4.exp")
 result = check_file("tests/fixtures/nist/nist_ctc_01_asme1_ap242-e1.stp",

@@ -34,12 +34,12 @@ years old and useful only as parser/reader regression input.
 ## Verify before trusting these counts
 
 `poetry run pytest tests/express_corpus_test.py` pins the counts and
-parses every file (schema readers: `stepper.express.load_express`).
+parses every file (schema readers: `step242.express.load_express`).
 
 ## What this is NOT
 
 - NOT the ISO/TS 10303-400:2025 SysML-mapping ARM — that is not
   published anywhere free (checked standards.iso.org and the stepmod
-  mirrors; see the stepper-pyoslc-vee skill for the acquisition story).
+  mirrors; see the step242-pyoslc-vee skill for the acquisition story).
 - NOT a current-edition corpus — if a schema disagrees with AP242 Ed.4
   (`ap242ed4_mim_lf.exp` in the vendor tree), AP242 wins.

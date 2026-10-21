@@ -5,7 +5,7 @@ import os
 
 import pytest
 
-from stepper.p21 import (
+from step242.p21 import (
     Binary, ComplexEntity, Enum, P21File, Ref, SimpleEntity, Typed,
     UNSET, DERIVED, parse_p21, load_p21,
 )
@@ -16,7 +16,7 @@ DEMO = r"""ISO-10303-21;
 HEADER;
 FILE_DESCRIPTION(('demo','second line'),'2;1');
 FILE_NAME('demo.step','2026-10-05T00:00:00',('Jon'),('NIST'),
-  'spike','stepper','');
+  'spike','step242','');
 FILE_SCHEMA(('AP242_MANAGED_MODEL_BASED_3D_ENGINEERING_MIM_LF { 1 0 10303 442 7 1 4 }'));
 ENDSEC;
 ANCHOR;
@@ -51,7 +51,7 @@ class TestTokens:
     def test_unset_derived(self):
         p = parse_p21(DEMO)
         assert p.instances["13"].args[3] is UNSET
-        from stepper.p21 import DERIVED
+        from step242.p21 import DERIVED
         assert p.instances["102"].parts[1].args == [DERIVED]
 
     def test_string_escape(self):

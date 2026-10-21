@@ -12,7 +12,7 @@ import os
 
 import pytest
 
-from stepper.express import load_express
+from step242.express import load_express
 
 FIXTURE_ROOT = os.path.join(os.path.dirname(__file__), "fixtures", "express", "stepmod")
 

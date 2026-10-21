@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """P1: product-structure extraction from AP242 P21 files.
 
-`stepper structure file.stp` walks the product backbone — PRODUCT →
+`step242 structure file.stp` walks the product backbone — PRODUCT →
 PRODUCT_DEFINITION_FORMATION → PRODUCT_DEFINITION → SHAPE_DEFINITION_
 REPRESENTATION (+ assembly links when NEXT_ASSEMBLY_USAGE_OCCURRENCE
 is present) — and emits OSLC-shaped resources:
@@ -262,18 +262,18 @@ def _oslc_id(label: str, ref: str, base: str) -> str:
     return f"{base}{label}/{ref.lstrip('#')}"
 
 
-_STEP_VOCAB = "https://github.com/mycr0ft/stepper/vocab#"
+_STEP_VOCAB = "https://github.com/mycr0ft/step242/vocab#"
 
 
 def to_oslc_jsonld(struct: ProductStructure,
-                   base: str = "https://example.org/stepper/") -> dict:
+                   base: str = "https://example.org/step242/") -> dict:
     """Emit OSLC-shaped JSON-LD (a @graph of resources)."""
     ctx = {
         "oslc": OSLC_CORE,
         "sysml": OSLC_SYSML,
         "dcterms": DCTERMS,
         "rdf": RDF,
-        "stepper": _STEP_VOCAB,
+        "step242": _STEP_VOCAB,
     }
     graph: List[dict] = []
 
@@ -285,7 +285,7 @@ def to_oslc_jsonld(struct: ProductStructure,
         "dcterms:title": os.path.basename(struct.file)
         if "/" in struct.file or "\\" in struct.file else struct.file,
         "dcterms:description": struct.schema,
-        "stepper:productCount": len(struct.of_kind("product")),
+        "step242:productCount": len(struct.of_kind("product")),
     })
 
     for p in struct.of_kind("product"):
@@ -335,7 +335,7 @@ def to_oslc_jsonld(struct: ProductStructure,
             "@type": "oslc:Resource",
             "dcterms:identifier": sr.ref,
             "dcterms:title": f"{sr.shape_kind} {sr.ref}",
-            "stepper:geometryItemCount": sr.geometry.get("items", 0),
+            "step242:geometryItemCount": sr.geometry.get("items", 0),
         })
 
     pmi = struct.of_kind("pmi_summary")
@@ -344,21 +344,21 @@ def to_oslc_jsonld(struct: ProductStructure,
             "@id": _oslc_id("pmi", pmi[0].ref, base),
             "@type": "oslc:Resource",
             "dcterms:title": "PMI summary",
-            **{f"stepper:{k.lower()}": v for k, v in pmi[0].pmi.items()},
+            **{f"step242:{k.lower()}": v for k, v in pmi[0].pmi.items()},
         })
 
     return {"@context": ctx, "@graph": graph}
 
 
 def to_oslc_turtle(struct: ProductStructure,
-                   base: str = "https://example.org/stepper/") -> str:
+                   base: str = "https://example.org/step242/") -> str:
     """Emit the same resources as Turtle (mirrors to_oslc_jsonld)."""
     lines = [
         f"@prefix oslc: <{OSLC_CORE}> .",
         f"@prefix sysml: <{OSLC_SYSML}> .",
         f"@prefix dcterms: <{DCTERMS}> .",
         f"@prefix rdf: <{RDF}> .",
-        f"@prefix stepper: <{_STEP_VOCAB}> .",
+        f"@prefix step242: <{_STEP_VOCAB}> .",
         "",
     ]
 
@@ -387,7 +387,7 @@ def to_oslc_turtle(struct: ProductStructure,
         ("dcterms:identifier", s_literal(struct.file)),
         ("dcterms:title", s_literal(title)),
         ("dcterms:description", s_literal(struct.schema)),
-        ("stepper:productCount",
+        ("step242:productCount",
          str(len(struct.of_kind("product")))),
     ]))
 
@@ -438,7 +438,7 @@ def to_oslc_turtle(struct: ProductStructure,
             ("a", "oslc:Resource"),
             ("dcterms:identifier", s_literal(sr.ref)),
             ("dcterms:title", s_literal(f"{sr.shape_kind} {sr.ref}")),
-            ("stepper:geometryItemCount",
+            ("step242:geometryItemCount",
              str(sr.geometry.get("items", 0))),
         ]))
 
@@ -448,13 +448,13 @@ def to_oslc_turtle(struct: ProductStructure,
         preds = [("a", "oslc:Resource"),
                  ("dcterms:title", s_literal("PMI summary"))]
         for k, v in pmi[0].pmi.items():
-            preds.append((f"stepper:{k.lower()}", str(v)))
+            preds.append((f"step242:{k.lower()}", str(v)))
         lines.append(statement(uri, preds))
 
     return "\n".join(lines)
 
 
-def structure_file(path, base: str = "https://example.org/stepper/"):
+def structure_file(path, base: str = "https://example.org/step242/"):
     """Convenience: extract + emit both forms (returned as a tuple)."""
     label = str(path)
     s = extract_structure(path, file_label=label)

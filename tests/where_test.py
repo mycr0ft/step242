@@ -10,10 +10,10 @@ import textwrap
 
 import pytest
 
-from stepper.check import check_file
-from stepper.express import load_express, parse_express
-from stepper.p21 import load_p21
-from stepper.where import evaluate_entity, evaluate_where_rules, rule_family
+from step242.check import check_file
+from step242.express import load_express, parse_express
+from step242.p21 import load_p21
+from step242.where import evaluate_entity, evaluate_where_rules, rule_family
 
 NIST = os.path.join(os.path.dirname(__file__), "fixtures", "nist")
 AP242_MIM = os.path.join(os.path.expanduser("~"), "proj", "third_party",
@@ -96,17 +96,17 @@ class TestStratification:
     def test_query_rule_is_now_evaluable(self):
         """Phase C item 4 v2: QUERY members are evaluated (per-member
         binding); the family label stays 'evaluable'."""
-        from stepper.where import rule_family, _query_vars
+        from step242.where import rule_family, _query_vars
         assert rule_family("SIZEOF(QUERY(q <* a | q > 1)) > 0") == "evaluable"
         assert _query_vars("... QUERY(q <* a | ...) ...") == {"q"}
         assert rule_family("EXISTS(a)") == "evaluable"
 
     def test_usedin_classified(self):
-        from stepper.where import rule_family
+        from step242.where import rule_family
         assert rule_family("SIZEOF(USEDIN(SELF, \"X.Y.Z\")) > 0") == "usedin"
 
     def test_function_call_classified(self):
-        from stepper.where import rule_family
+        from step242.where import rule_family
         assert rule_family("make_space(1.0, closed)") == "function-call"
 
 
@@ -136,17 +136,17 @@ class TestCheckIntegration:
     def test_where_off_env(self):
         path = _p21_for("#1 = PAIR(9, 3);")
         schema = parse_express(SCHEMA)
-        old = os.environ.get("STEPPER_WHERE")
-        os.environ["STEPPER_WHERE"] = "0"
+        old = os.environ.get("STEP242_WHERE")
+        os.environ["STEP242_WHERE"] = "0"
         try:
             res = check_file(path, schema=schema, semantic="strict")
             assert not any(f.stage == "where" for f in res.findings)
         finally:
             os.unlink(path)
             if old is None:
-                os.environ.pop("STEPPER_WHERE", None)
+                os.environ.pop("STEP242_WHERE", None)
             else:
-                os.environ["STEPPER_WHERE"] = old
+                os.environ["STEP242_WHERE"] = old
 
 
 @pytest.mark.skipif(not os.path.exists(AP242_MIM),

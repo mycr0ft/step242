@@ -1,33 +1,37 @@
-# GitLab CI: STEP parse + check + WHERE + baseline gate via stepper.
+# GitLab CI: STEP parse + check + WHERE + baseline gate via step242.
 #
 # Include from your .gitlab-ci.yml:
 #
 #   include:
-#     - remote: 'https://raw.githubusercontent.com/mycr0ft/stepper/main/gitlab/step-check.gitlab-ci.yml'
+#     - remote: 'https://raw.githubusercontent.com/mycr0ft/step242/main/gitlab/step-check.gitlab-ci.yml'
 #
 #   step-check:
 #     extends: .step-check
 #     variables:
 #       STEP_PATHS: "step/"
-#       STEPPER_SEMANTIC: "advisory"    # off | advisory | strict
-#       # STEPPER_BASELINE: "config-mgmt/baseline.json"
+#       STEP242_SEMANTIC: "advisory"    # off | advisory | strict
+#       # STEP242_BASELINE: "config-mgmt/baseline.json"
 #
 # Parse failures are ALWAYS blocking; schema-level semantics are
-# advisory by default (STEPPER_SEMANTIC=strict to block, off to skip).
+# advisory by default (STEP242_SEMANTIC=strict to block, off to skip).
 #
-# NOTE: PyPI's `stepper` name is a DIFFERENT project — we install from
-# GitHub main; switch to a PyPI pin after we publish under a reserved
-# name.
+# NOTE: the project was called `stepper` until 2026-10-21 and is now
+# `step242` (PyPI's `stepper` name belongs to an unrelated motor-control
+# package). We install from GitHub main until the first PyPI release;
+# after that, pin `step242==X.Y.Z`.
+#
+# STEP242_SEMANTIC / STEP242_BASELINE are the current variable names;
+# the pre-rename STEPPER_SEMANTIC / STEPPER_BASELINE still work.
 
 .step-check:
   image: python:3.13
   variables:
     STEP_PATHS: "."
-    STEPPER_SEMANTIC: "advisory"
-    STEPPER_BASELINE: ""   # optional: path to a pinned baseline manifest
+    STEP242_SEMANTIC: "advisory"
+    STEP242_BASELINE: ""   # optional: path to a pinned baseline manifest
     GIT_STRATEGY: clone
   before_script:
-    - pip install git+https://github.com/mycr0ft/stepper@main
+    - pip install git+https://github.com/mycr0ft/step242@main
   script:
     - |
       rc=0
@@ -35,11 +39,12 @@
       files=$(find $STEP_PATHS \( -name '*.stp' -o -name '*.step' -o -name '*.p21' \) -type f 2>/dev/null)
       for f in $files; do
         echo "== $f"
-        stepper check "$f" --semantic "$STEPPER_SEMANTIC" || rc=1
+        step242 check "$f" --semantic "${STEP242_SEMANTIC:-${STEPPER_SEMANTIC:-advisory}}" || rc=1
       done
-      if [ -n "$STEPPER_BASELINE" ]; then
+      baseline="${STEP242_BASELINE:-${STEPPER_BASELINE:-}}"
+      if [ -n "$baseline" ]; then
         # shellcheck disable=SC2086
-        stepper baseline gate "$STEPPER_BASELINE" --step $files || rc=1
+        step242 baseline gate "$baseline" --step $files || rc=1
       fi
       exit $rc
   rules:

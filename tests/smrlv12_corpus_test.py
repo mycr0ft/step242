@@ -15,7 +15,7 @@ import os
 
 import pytest
 
-from stepper.express import load_express
+from step242.express import load_express
 
 V12_TREE = os.path.join(os.path.expanduser("~"), "proj", "third_party", "smrlv12",
                         "data", "modules")
@@ -114,7 +114,7 @@ def test_ts1028_module_vendored():
 @pytest.mark.skipif(not os.path.isdir(V12_TREE),
                     reason="smrlv12 local mirror absent (fixture-only run)")
 def test_v12_schemas_all_parse():
-    """The whole v12 module tree parses through stepper's reader."""
+    """The whole v12 module tree parses through step242's reader."""
     bad = []
     total = 0
     count = 0

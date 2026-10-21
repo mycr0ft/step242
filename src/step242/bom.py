@@ -316,7 +316,7 @@ def _link(model: OBPModel, data) -> None:
 
 
 def structure_to_obp(model) -> OBPModel:
-    """Convenience: reuse the P1 `stepper.structure` extraction as the instance source."""
+    """Convenience: reuse the P1 `step242.structure` extraction as the instance source."""
     from .structure import ProductStructure  # noqa: F401  (typing only; kept for API shape)
     return model  # no-op placeholder; to_obp() already consumes P21 directly
 
@@ -359,7 +359,7 @@ def to_obp_json(model: OBPModel) -> Dict[str, Any]:
 # sysmlpy's stable interchange ids (hash the declared identity, never
 # the resolved context).
 
-OBUUID_NAMESPACE = "6f1a2f52-9d0e-4b8a-9c1f-0b7a58d2e100"   # stepper OBP uuid ns
+OBUUID_NAMESPACE = "6f1a2f52-9d0e-4b8a-9c1f-0b7a58d2e100"   # step242 OBP uuid ns
 
 
 def instance_uuid(obp_class: str, step_ref: str, name: str = "") -> str:
@@ -377,7 +377,7 @@ def uuid_bridge(model: OBPModel) -> Dict[str, Any]:
 
     - ``attributes`` — one pseudo-instance per OBP node, in the
       Hash_based_v5_uuid_attribute shape
-      (``{uuid, hash_function: 'stepper-obp-v1', identified: {...}}``);
+      (``{uuid, hash_function: 'step242-obp-v1', identified: {...}}``);
     - ``provenance`` — step_ref → uuid (the join key the Vee registry
       resolves STEP-side);
     - ``relationships`` — the obp_refs edges as -400 Uuid_relationship
@@ -389,7 +389,7 @@ def uuid_bridge(model: OBPModel) -> Dict[str, Any]:
 
     return {
         "obm": "iso-ts-10303-400-uuid",
-        "hash_function": "stepper-obp-v1",
+        "hash_function": "step242-obp-v1",
         "file": model.file,
         "attributes": [
             {

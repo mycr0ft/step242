@@ -1,5 +1,5 @@
 [project]
-name = "stepper"
+name = "step242"
 version = "0.1.0"
 description = "Pure-python STEP (ISO 10303) reader: Part 21 exchange files, EXPRESS schemas, AP242 semantic checks"
 authors = [{ name = "Jon Fox" }]
@@ -8,21 +8,34 @@ requires-python = ">=3.9"
 dependencies = []
 classifiers = [
     "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
     "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering",
+    "Topic :: Software Development :: Libraries :: Python Modules",
     "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
 ]
 license = "MPL-2.0"
+
+[project.scripts]
+step242 = "step242.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mycr0ft/step242"
+Repository = "https://github.com/mycr0ft/step242"
+Issues = "https://github.com/mycr0ft/step242/issues"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-packages = [{ include = "stepper", from = "src" }]
-
-[tool.poetry.scripts]
-stepper = "stepper.cli:main"
+packages = [{ include = "step242", from = "src" }]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

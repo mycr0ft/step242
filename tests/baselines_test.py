@@ -9,7 +9,7 @@ import os
 
 import pytest
 
-from stepper.baselines import (
+from step242.baselines import (
     BaselineInput, baseline_id_from_manifest, create_baseline, gate,
     verify_baseline,
 )

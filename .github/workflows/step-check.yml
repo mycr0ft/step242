@@ -4,7 +4,7 @@
 #
 #   jobs:
 #     step-check:
-#       uses: mycr0ft/stepper/.github/workflows/step-check.yml@main
+#       uses: mycr0ft/step242/.github/workflows/step-check.yml@main
 #       with:
 #         paths: "step/"
 #         semantic: "advisory"        # off | advisory | strict
@@ -13,10 +13,11 @@
 # This repo's own pushes dogfood it via step-dogfood.yml (which calls
 # this workflow locally on the vendored NIST fixtures).
 #
-# NOTE: PyPI's `stepper` name is a DIFFERENT project (W. Trevor King's).
-# This workflow installs from this repo by default; pass
-# stepper-version: "stepper==X.Y.Z" only after we publish under a
-# reserved name.
+# NOTE: the project was called `stepper` until 2026-10-21 and is now
+# `step242` — PyPI's `stepper` name belongs to an unrelated motor-control
+# package (W. Trevor King's), so the distribution had to change. This
+# workflow installs from this repo by default; once the first PyPI release
+# is out, pass step242-version: "step242==X.Y.Z" to pin it.
 
 name: step-check
 
@@ -55,10 +56,10 @@ on:
         required: false
         default: "3.13"
         type: string
-      stepper-version:
-        description: "Pip spec (default: git+https://github.com/mycr0ft/stepper@main)"
+      step242-version:
+        description: "Pip spec (default: git+https://github.com/mycr0ft/step242@main)"
         required: false
-        default: "git+https://github.com/mycr0ft/stepper@main"
+        default: "git+https://github.com/mycr0ft/step242@main"
         type: string
 
 jobs:
@@ -72,10 +73,10 @@ jobs:
           python-version: ${{ inputs.python-version || '3.13' }}
           cache: pip
 
-      - name: Install stepper
+      - name: Install step242
         run: |
           python -m pip install --upgrade pip
-          pip install "${{ inputs.stepper-version }}"
+          pip install "${{ inputs.step242-version }}"
 
       - name: Resolve .stp files
         env:
@@ -106,7 +107,7 @@ jobs:
           # shellcheck disable=SC2086
           for f in ${{ steps.files.outputs.list }}; do
             echo "::group::$f"
-            stepper check "$f" --semantic ${{ inputs.semantic || 'advisory' }} || rc=1
+            step242 check "$f" --semantic ${{ inputs.semantic || 'advisory' }} || rc=1
             echo "::endgroup::"
           done
           exit $rc
@@ -116,10 +117,10 @@ jobs:
         run: |
           if [ -n "${{ inputs.baseline-inputs }}" ]; then
             # shellcheck disable=SC2086
-            stepper baseline gate "${{ inputs.baseline-manifest }}" \
+            step242 baseline gate "${{ inputs.baseline-manifest }}" \
               --step ${{ inputs.baseline-inputs }}
           else
             # shellcheck disable=SC2086
-            stepper baseline gate "${{ inputs.baseline-manifest }}" \
+            step242 baseline gate "${{ inputs.baseline-manifest }}" \
               --step ${{ steps.files.outputs.list }}
           fi

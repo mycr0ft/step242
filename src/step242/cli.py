@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""stepper CLI: `stepper check` (gate), `stepper inspect` (stats)."""
+"""step242 CLI: `step242 check` (gate), `step242 inspect` (stats)."""
 
 import argparse
 import json
@@ -33,7 +33,7 @@ def discover(paths, exclude=()):
 
 
 def main(argv=None):
-    ap = argparse.ArgumentParser(prog="stepper")
+    ap = argparse.ArgumentParser(prog="step242")
     sub = ap.add_subparsers(dest="cmd", required=True)
 
     p_check = sub.add_parser("check", help="parse gate + schema checks")
@@ -53,7 +53,7 @@ def main(argv=None):
         "structure",
         help="extract product structure as OSLC JSON-LD / Turtle (P1)")
     p_struct.add_argument("file", help=".stp file")
-    p_struct.add_argument("--base", default="https://example.org/stepper/",
+    p_struct.add_argument("--base", default="https://example.org/step242/",
                           help="base URL for emitted resources")
     p_struct.add_argument("--format", choices=("jsonld", "turtle"),
                           default="jsonld")
@@ -85,7 +85,7 @@ def main(argv=None):
     args = ap.parse_args(argv)
 
     if args.cmd == "check":
-        from stepper.check import CheckResult, Finding
+        from step242.check import CheckResult, Finding
         files = discover(args.paths, exclude=args.exclude or ())
         if not files:
             print("no .stp/.step/.p21 files found", file=sys.stderr)
@@ -124,7 +124,7 @@ def main(argv=None):
         return 0
 
     if args.cmd == "structure":
-        from stepper.structure import structure_file
+        from step242.structure import structure_file
         _, jsonld, turtle = structure_file(str(args.file), base=args.base)
         if args.format == "turtle":
             print(turtle, end="")

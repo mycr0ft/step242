@@ -7,5 +7,5 @@ https://ap238.org/smrl/data/business_object_models/managed_model_based_3d_engine
 
 ISO expressly permits use/modification/redistribution of SMRL/STEPmod
 EXPRESS schemas (see expresslang/smrlv11 README for the full license
-text). Used by stepper as the OBP class inventory for the Phase C
+text). Used by step242 as the OBP class inventory for the Phase C
 mapper (tests/bom_test.py verifies every mapping target against it).
