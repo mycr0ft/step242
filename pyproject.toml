@@ -39,6 +39,9 @@ packages = [{ include = "step242", from = "src" }]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.0"
+# rdflib is needed by the Turtle round-trip checks (tests/structure_test.py).
+# The package itself emits Turtle as text and does not import rdflib.
+rdflib = "^7.0"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
