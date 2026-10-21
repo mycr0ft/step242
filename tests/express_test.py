@@ -7,8 +7,11 @@ import pytest
 
 from step242.express import ExpressSchema, parse_express, load_express
 
+# The project was renamed from `stepper` to `step242` on 2026-10-21; the
+# old variable name still works.
 SCHEMA_ENV = "STEP242_AP242_EXP"
-SCHEMA_PATH = os.environ.get(SCHEMA_ENV, "")
+SCHEMA_PATH = (os.environ.get(SCHEMA_ENV)
+               or os.environ.get("STEPPER_AP242_EXP", ""))
 
 MINI = """
 SCHEMA mini;
