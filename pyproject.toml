@@ -37,6 +37,9 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry]
 packages = [{ include = "step242", from = "src" }]
 
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0"
+
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 markers = [
